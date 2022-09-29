@@ -212,15 +212,20 @@ function onResults(results) {
 
   if (activeDifficulty === 'hard') {
     screenNumber = randomNumber - lastRandomNumber;
-    screenNumberMessage = `${lastRandomNumber}  ${screenNumber > 0 ? `+${screenNumber}` : screenNumber} `;
+    screenNumberMessage = `${lastRandomNumber}${screenNumber > 0 ? `+${screenNumber}` : screenNumber} `;
   } else {
     screenNumber = randomNumber;
     screenNumberMessage = `${screenNumber > 0 ? `${screenNumber}` : screenNumber} `;
   }
 
-  canvasCtx.fillText(screenNumberMessage, canvasElement.width / 2, 100, 800);
+  // canvasCtx.fillText(screenNumberMessage, canvasElement.width / 2, 100, 800);
 
   if(leftHandPosition && rightHandPosition) {
+
+    canvasCtx.fillText(screenNumberMessage,
+      (leftHandPosition.hand_position.x + rightHandPosition.hand_position.x) / 2,
+      (leftHandPosition.hand_position.y + rightHandPosition.hand_position.y) / 2 - 100 , 800);
+
     if (lastRandomNumber === hands_number) {
       canvasCtx.fillStyle = 'green';
     } else {
@@ -231,16 +236,22 @@ function onResults(results) {
       (leftHandPosition.hand_position.y + rightHandPosition.hand_position.y) / 2,
         800);
   }
+  else{
+    canvasCtx.fillText(screenNumberMessage, canvasElement.width / 2, 100, 800);
+    canvasCtx.fillText('Hands up !', canvasElement.width / 2 - 100, canvasElement.height / 2 , 800);
+
+  }
 
   if (hands_number === randomNumber) {
+
+    // startTime = Date.now();
+
+    operationSpeed = Number(averageTime / countCorrectAnswers).toFixed(2);
     countCorrectAnswers += 1;
 
-    operationSpeed = ((Date.now() - startTime) / countCorrectAnswers) / 1000;
-    startTime = Date.now();
-
-    averageTime = Number((averageTime * countCorrectAnswers + operationSpeed) / (countCorrectAnswers + 1)).toFixed(2);
-    operationSpeed = Number(operationSpeed).toFixed(2);
   }
+  averageTime =  Date.now() - startTime ;
+  averageTime = Number(averageTime / 1000).toFixed(2);
 
   canvasCtx.font = '60px Major Mono Display';
   canvasCtx.fillStyle = 'green';
@@ -248,8 +259,9 @@ function onResults(results) {
 
   canvasCtx.font = '40px Major Mono Display';
   canvasCtx.fillStyle = 'green';
-  canvasCtx.fillText(`Level : ${activeDifficulty}`, canvasElement.width / 2, canvasElement.height / 2 + 300, 800);
-  canvasCtx.fillText(`Avg | Last : ${averageTime} s | ${operationSpeed}`, canvasElement.width / 2, canvasElement.height / 2 + 400, 800);
+  canvasCtx.fillText(`Level : ${activeDifficulty}`, canvasElement.width / 2, canvasElement.height - 100, 800);
+  canvasCtx.fillText(`${averageTime} s`, 100, canvasElement.height * 0.9, 800);
+  canvasCtx.fillText(`${operationSpeed}s`, canvasElement.width - 100, canvasElement.height - 100, 800);
 
   if (randomNumber === hands_number) {
     lastRandomNumber = randomNumber;
@@ -286,8 +298,8 @@ new controls
     difficulty: 'easy',
   })
   .add([
-    new controls.StaticText({title: 'Cheese and Bop'}),
-    new controls.Toggle({title: 'Selfie Mode', field: 'selfieMode'}),
+    new controls.StaticText({title: '🧀&💡'}),
+    // new controls.Toggle({title: 'Selfie Mode', field: 'selfieMode'}),
     new controls.Slider({
       title: 'Difficulty',
       field: 'difficulty',
