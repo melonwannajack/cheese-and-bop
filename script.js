@@ -187,21 +187,22 @@ function onResults(results) {
   const ko_color =  "rgb(236,150,54)";
   if (Math.floor(hands_number / 10) === Math.floor( randomNumber / 10)) {
     drawingUtils.drawConnectors(canvasCtx, results.rightHandLandmarks, mpHolistic.HAND_CONNECTIONS, {color: ok_color});
-  } else {
-    drawingUtils.drawConnectors(canvasCtx, results.rightHandLandmarks, mpHolistic.HAND_CONNECTIONS, {color: ko_color});
   }
   if (hands_number % 10 === randomNumber % 10) {
     drawingUtils.drawConnectors(canvasCtx, results.leftHandLandmarks, mpHolistic.HAND_CONNECTIONS, {color: ok_color});
-  } if (hands_number === lastRandomNumber) {
+  }
+  if (hands_number === lastRandomNumber) {
     drawingUtils.drawConnectors(canvasCtx, results.leftHandLandmarks, mpHolistic.HAND_CONNECTIONS, {color: ok_color});
+    drawingUtils.drawConnectors(canvasCtx, results.rightHandLandmarks, mpHolistic.HAND_CONNECTIONS, {color: ok_color});
   }
   else {
     drawingUtils.drawConnectors(canvasCtx, results.leftHandLandmarks, mpHolistic.HAND_CONNECTIONS, {color: ko_color});
+    drawingUtils.drawConnectors(canvasCtx, results.rightHandLandmarks, mpHolistic.HAND_CONNECTIONS, {color: ko_color});
   }
 
   canvasCtx.font = '80px Major Mono Display';
 
-  canvasCtx.fillStyle = 'rgba(36,108,246,0.65)';
+  canvasCtx.fillStyle = 'rgba(36,108,246,1)';
 
   canvasCtx.font = '90px Major Mono Display';
   canvasCtx.textAlign = 'center';
@@ -211,13 +212,13 @@ function onResults(results) {
 
   if (activeDifficulty === 'hard') {
     screenNumber = randomNumber - lastRandomNumber;
-    screenNumberMessage = `(${lastRandomNumber}) ${screenNumber > 0 ? `+${screenNumber}` : screenNumber} `;
+    screenNumberMessage = `${lastRandomNumber}  ${screenNumber > 0 ? `+${screenNumber}` : screenNumber} `;
   } else {
     screenNumber = randomNumber;
     screenNumberMessage = `${screenNumber > 0 ? `${screenNumber}` : screenNumber} `;
   }
 
-  canvasCtx.fillText(screenNumberMessage, canvasElement.width / 2, canvasElement.height / 2 - 100, 800);
+  canvasCtx.fillText(screenNumberMessage, canvasElement.width / 2, 100, 800);
 
   if(leftHandPosition && rightHandPosition) {
     if (lastRandomNumber === hands_number) {
